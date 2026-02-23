@@ -40,7 +40,16 @@ Generate:
     );
 
     const data = await response.json();
-    res.json({ output: data.candidates[0].content.parts[0].text });
+
+console.log("FULL GEMINI RESPONSE:", JSON.stringify(data, null, 2));
+
+if (!data.candidates) {
+  return res.status(500).json({ error: "No candidates returned", details: data });
+}
+
+res.json({
+  output: data.candidates[0].content.parts[0].text
+});
 
   } catch (error) {
     res.status(500).json({ error: "Something went wrong." });
